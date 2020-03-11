@@ -1,6 +1,7 @@
 import React, { Fragment } from "react";
-import "./Led.css";
+import styles from "./Led.module.css";
 import { ILed } from "../model/ILed";
+import LedColor from "../ledcolor/LedColor";
 
 type LedProps = ILed & {
   onSelect?: (index: number) => void;
@@ -22,10 +23,11 @@ export default function Led({
     <Fragment>
       <h1>Index: {index + 1}</h1>
       <div
-        className="box"
+        className={styles.box}
         style={style}
         onClick={e => handleClick(e, 42)}
       ></div>
+      <LedColor color={color} />
     </Fragment>
   );
 }
