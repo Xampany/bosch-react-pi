@@ -1,34 +1,21 @@
-import React, { useState, useEffect } from "react";
-import { ILed } from "../model/ILed";
+import React, { useState } from "react";
+import useReadLeds from "../../hooks/readLeds/readLeds";
 import Led from "../led/Led";
+import { API_URL_01 } from "../../environment";
 
 export default function LedList() {
-  const [leds, setLeds] = useState<ILed[]>([]);
-
-  useEffect(() => {
-    fetch(
-      "https://ae680a0551cf8bd14b83c131e0796b82.balena-devices.com/api/colors"
-    )
-      .then(res => res.json())
-      .then((payload: string[]) => {
-        const state: ILed[] = payload.map((color, index) => {
-          return {
-            color,
-            index
-          };
-        });
-
-        setLeds(state);
-      });
-  }, []);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [url, setUrl] = useState(API_URL_01);
+  const { leds, status } = useReadLeds(url);
 
   function onSelectLed(index: number) {
     console.log(`onSelectLed ${index}`);
-    setLeds([]);
+    // setLeds([]);
   }
   return (
     <>
       <h1>Led Liste</h1>
+      <p>{status}</p>
       <table>
         <tbody>
           <tr>

@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { ILed } from "../../common/model/ILed";
+import { API_URL_01 } from "../../environment";
 
 /**
  * Die möglichen Ladezustände
@@ -10,7 +11,7 @@ export type LoadingStatus = "pending" | "complete" | "error";
 /**
  * Hook zum Laden der Liste der Leds über die REST API
  */
-export default function useReadLeds(url: string) {
+export default function useReadLeds(url = API_URL_01) {
   /**
    * Die Liste der Leds
    */
@@ -26,16 +27,20 @@ export default function useReadLeds(url: string) {
   useEffect(() => {
     setStatus("pending");
 
+    // HINT: an useEffect darf keine async function übergeben werden
     readLeds(url)
       .then(leds => setLeds(leds))
       .then(() => setStatus("complete"))
       .catch(() => setStatus("error"));
-  }, []);
+  }, [url]);
 
   return { leds, status };
 }
 
-// HINT: an useEffect darf keine async function übergeben werden
+/**
+ * 
+ * @param url 
+ */
 async function readLeds(url: string): Promise<ILed[]> {
   const URL = `${url}/colors`;
 
